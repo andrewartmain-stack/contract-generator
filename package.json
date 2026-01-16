@@ -8,7 +8,9 @@
     "start": "next start"
   },
   "dependencies": {
+    "docxtemplater": "^3.67.6",
     "next": "16.1.1",
+    "pizzip": "^3.2.0",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },
