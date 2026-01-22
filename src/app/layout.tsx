@@ -5,8 +5,8 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Contract Generator',
-  description: 'Generate Romanian contracts from Word templates',
+  title: 'Docs Generator',
+  description: 'Generate required documents for workers',
 };
 
 export default function RootLayout({
