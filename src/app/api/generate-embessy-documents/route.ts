@@ -1,13 +1,14 @@
 // app/api/generate-embessy-documents/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import Docxtemplater from 'docxtemplater';
-import PizZip from 'pizzip';
+import Handlebars from 'handlebars';
+import puppeteer from 'puppeteer';
 import JSZip from 'jszip';
 import fs from 'fs';
 import path from 'path';
 import { PDFDocument } from 'pdf-lib';
 
 export async function POST(request: NextRequest) {
+  let browser;
   try {
     const data = await request.json();
     const { company, employees } = data;
@@ -17,16 +18,44 @@ export async function POST(request: NextRequest) {
       employees.length,
     );
 
-    // Template file names for embassy documents (все Word файлы)
+    // HTML template file names
     const templates = [
-      'Embessy_COMODAT_WITH_PLACEHOLDERS.docx',
-      'Embessy_GARANTIE_WITH_PLACEHOLDERS.docx',
-      'Embessy_ADEVERINTA_WITH_PLACEHOLDERS.docx',
-      'Embasyy_CIM_WITH_PLACEHOLDERS.docx', // Word документ
+      'Embessy_COMODAT_WITH_PLACEHOLDERS.html',
+      'Embessy_GARANTIE_WITH_PLACEHOLDERS.html',
+      'Embessy_ADEVERINTA_WITH_PLACEHOLDERS.html',
+      'Embesyy_CIM_WITH_PLACEHOLDERS.html',
     ];
 
     // Create JSZip instance
     const zip = new JSZip();
+
+    // Launch browser for PDF generation
+    browser = await puppeteer.launch({
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    });
+
+    // Register custom Handlebars helpers
+    Handlebars.registerHelper('formatDate', function (dateStr: string) {
+      if (!dateStr) return '';
+      try {
+        const date = new Date(dateStr);
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}.${month}.${year}`;
+      } catch (error) {
+        return dateStr;
+      }
+    });
+
+    Handlebars.registerHelper('uppercase', function (str: string) {
+      return str ? str.toUpperCase() : '';
+    });
+
+    Handlebars.registerHelper('currentYear', function () {
+      return new Date().getFullYear();
+    });
 
     // Process each employee
     for (const employee of employees) {
@@ -37,6 +66,55 @@ export async function POST(request: NextRequest) {
 
       // Create folder for employee
       const employeeFolder = zip.folder(safeFolderName);
+
+      // Prepare template data
+      const templateData = {
+        // Company fields
+        company_name_company_field: company.company_name_company_field || '',
+        company_fiscal_code_company_field:
+          company.company_fiscal_code_company_field || '',
+        company_address_company_field:
+          company.company_address_company_field || '',
+        company_registrul_comertului_company_field:
+          company.company_registrul_comertului_company_field || '',
+        company_owner_company_field: company.company_owner_company_field || '',
+
+        // Employee fields
+        employee_name_worker_field: employee.employee_name_worker_field || '',
+        employee_address_worker_field:
+          employee.employee_address_worker_field || '',
+        document_cnp_worker_field: employee.document_cnp_worker_field || '',
+        country_worker_field: employee.country_worker_field || '',
+        employee_dob_worker_field: employee.employee_dob_worker_field || '',
+        document_seria_number_worker_field:
+          employee.document_seria_number_worker_field || '',
+        issued_by_worker_field: employee.issued_by_worker_field || '',
+        work_permit_worker_field: employee.work_permit_worker_field || '',
+        permit_issued_worker_field: employee.permit_issued_worker_field || '',
+        activity_start_worker_field: employee.activity_start_worker_field || '',
+        contract_number_worker_field:
+          employee.contract_number_worker_field || '',
+        contract_creation_date_worker_field:
+          employee.contract_creation_date_worker_field || '',
+        salary_worker_field: employee.salary_worker_field || '4050lei/900E',
+        cor_worker_field: employee.cor_worker_field || 'cor 962101',
+        worker_position_worker_field:
+          employee.worker_position_worker_field || 'COURIER',
+        comodant_worker_field:
+          employee.comodant_worker_field || 'Alazem Muhamed Anas',
+        comodant_address_worker_field:
+          employee.comodant_address_worker_field || '',
+        comodant_cnp_worker_field:
+          employee.comodant_cnp_worker_field || '19508094200115',
+        comodant_end_worker_field: employee.comodant_end_worker_field || '',
+        today: new Date().toLocaleDateString('ro-RO'),
+        todayFormatted: new Date().toLocaleDateString('ro-RO', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+        }),
+        currentYear: new Date().getFullYear(),
+      };
 
       // Process each template
       for (const templateName of templates) {
@@ -53,81 +131,39 @@ export async function POST(request: NextRequest) {
           continue;
         }
 
-        // Prepare template data
-        const templateData = {
-          // Company fields
-          company_name_company_field: company.company_name_company_field || '',
-          company_fiscal_code_company_field:
-            company.company_fiscal_code_company_field || '',
-          company_address_company_field:
-            company.company_address_company_field || '',
-          company_registrul_comertului_company_field:
-            company.company_registrul_comertului_company_field || '',
-          company_owner_company_field:
-            company.company_owner_company_field || '',
+        // Read and compile HTML template
+        const htmlContent = fs.readFileSync(templatePath, 'utf8');
+        const template = Handlebars.compile(htmlContent);
+        const renderedHtml = template(templateData);
 
-          // Employee fields
-          employee_name_worker_field: employee.employee_name_worker_field || '',
-          employee_address_worker_field:
-            employee.employee_address_worker_field || '',
-          document_cnp_worker_field: employee.document_cnp_worker_field || '',
-          country_worker_field: employee.country_worker_field || '',
-          employee_dob_worker_field: employee.employee_dob_worker_field || '',
-          document_seria_number_worker_field:
-            employee.document_seria_number_worker_field || '',
-          issued_by_worker_field: employee.issued_by_worker_field || '',
-          work_permit_worker_field: employee.work_permit_worker_field || '',
-          permit_issued_worker_field: employee.permit_issued_worker_field || '',
-          activity_start_worker_field:
-            employee.activity_start_worker_field || '',
-          contract_number_worker_field:
-            employee.contract_number_worker_field || '',
-          contract_creation_date_worker_field:
-            employee.contract_creation_date_worker_field || '',
-          salary_worker_field: employee.salary_worker_field || '4050lei/900E',
-          cor_worker_field: employee.cor_worker_field || 'cor 962101',
-          worker_position_worker_field:
-            employee.worker_position_worker_field || 'COURIER',
-          comodant_worker_field:
-            employee.comodant_worker_field || 'Alazem Muhamed Anas',
-          comodant_address_worker_field:
-            employee.comodant_address_worker_field || '',
-          comodant_cnp_worker_field:
-            employee.comodant_cnp_worker_field || '19508094200115',
-          comodant_end_worker_field: employee.comodant_end_worker_field || '',
-        };
+        // Generate PDF from HTML using puppeteer
+        const page = await browser.newPage();
 
-        try {
-          // Process Word document
-          const content = fs.readFileSync(templatePath, 'binary');
-          const zipTemplate = new PizZip(content);
+        // Set page content
+        await page.setContent(renderedHtml, {
+          waitUntil: 'networkidle0',
+        });
 
-          const doc = new Docxtemplater(zipTemplate, {
-            paragraphLoop: true,
-            linebreaks: true,
-            delimiters: {
-              start: '{{',
-              end: '}}',
-            },
-          });
+        // Generate PDF
+        const pdfBuffer = await page.pdf({
+          format: 'A4',
+          printBackground: true,
+          margin: {
+            top: '20mm',
+            right: '15mm',
+            bottom: '20mm',
+            left: '15mm',
+          },
+        });
 
-          doc.setData(templateData);
-          doc.render();
+        await page.close();
 
-          const buffer = doc.getZip().generate({
-            type: 'nodebuffer',
-            compression: 'DEFLATE',
-          });
-
-          const outputFileName = getOutputFileName(templateName, employeeName);
-          employeeFolder?.file(outputFileName, buffer);
-        } catch (error: any) {
-          console.error(
-            `Error rendering template ${templateName} for ${employeeName}:`,
-            error,
-          );
-          continue;
-        }
+        // Add PDF file to employee folder
+        const outputFileName = getOutputFileName(templateName, employeeName);
+        console.log(
+          `Generating PDF: ${outputFileName} from template: ${templateName}`,
+        );
+        employeeFolder?.file(outputFileName, pdfBuffer);
       }
 
       // Process photo if exists
@@ -150,6 +186,11 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Close browser
+    if (browser) {
+      await browser.close();
+    }
+
     // Generate ZIP file
     const zipBuffer = await zip.generateAsync({ type: 'nodebuffer' });
 
@@ -170,6 +211,11 @@ export async function POST(request: NextRequest) {
   } catch (error: any) {
     console.error('Error generating embassy documents:', error);
 
+    // Ensure browser is closed even on error
+    if (browser) {
+      await browser.close();
+    }
+
     return NextResponse.json(
       {
         error: 'Failed to generate documents',
@@ -181,20 +227,20 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// Helper function to generate output file names
+// Helper function to generate output file names - ИСПРАВЛЕНА для HTML шаблонов
 function getOutputFileName(templateName: string, employeeName: string): string {
   const safeName = employeeName
     .replace(/[^a-zA-Z0-9ăâîșțĂÂÎȘȚ ]/g, '')
     .replace(/\s+/g, '_');
 
   const baseNames: Record<string, string> = {
-    'Embessy_COMODAT_WITH_PLACEHOLDERS.docx': `Contract_Comodat_${safeName}.docx`,
-    'Embessy_GARANTIE_WITH_PLACEHOLDERS.docx': `Scrisoare_Garantie_${safeName}.docx`,
-    'Embessy_ADEVERINTA_WITH_PLACEHOLDERS.docx': `Adeverinta_${safeName}.docx`,
-    'Embasyy_CIM_WITH_PLACEHOLDERS.docx': `Contract_Munca_${safeName}.docx`, // Оставляем как DOCX
+    'Embessy_COMODAT_WITH_PLACEHOLDERS.html': `Contract_Comodat_${safeName}.pdf`,
+    'Embessy_GARANTIE_WITH_PLACEHOLDERS.html': `Scrisoare_Garantie_${safeName}.pdf`,
+    'Embessy_ADEVERINTA_WITH_PLACEHOLDERS.html': `Adeverinta_${safeName}.pdf`,
+    'Embesyy_CIM_WITH_PLACEHOLDERS.html': `Contract_Munca_${safeName}.pdf`,
   };
 
-  return baseNames[templateName] || `Document_${safeName}.docx`;
+  return baseNames[templateName] || `Document_${safeName}.pdf`;
 }
 
 // Helper function to convert image to PDF using pdf-lib
@@ -263,10 +309,10 @@ export async function GET() {
   try {
     const templatesDir = path.join(process.cwd(), 'public', 'templates');
     const requiredTemplates = [
-      'Embessy_COMODAT_WITH_PLACEHOLDERS.docx',
-      'Embessy_GARANTIE_WITH_PLACEHOLDERS.docx',
-      'Embessy_ADEVERINTA_WITH_PLACEHOLDERS.docx',
-      'Embasyy_CIM_WITH_PLACEHOLDERS.docx',
+      'Embessy_COMODAT_WITH_PLACEHOLDERS.html',
+      'Embessy_GARANTIE_WITH_PLACEHOLDERS.html',
+      'Embessy_ADEVERINTA_WITH_PLACEHOLDERS.html',
+      'Embesyy_CIM_WITH_PLACEHOLDERS.html',
     ];
 
     const availableTemplates = [];
@@ -280,7 +326,7 @@ export async function GET() {
           name: template,
           size: `${(stats.size / 1024).toFixed(2)} KB`,
           lastModified: stats.mtime,
-          type: 'Word',
+          type: 'HTML',
         });
       } else {
         missingTemplates.push(template);
@@ -297,10 +343,10 @@ export async function GET() {
       totalRequired: requiredTemplates.length,
       available: availableTemplates.length,
       features: {
+        outputFormat: 'PDF',
         photoToPdf: true,
         maxPhotoSize: '5MB',
         supportedImageFormats: ['JPEG', 'PNG'],
-        outputPdfName: 'Document_Foto_[nume].pdf',
         totalDocuments: requiredTemplates.length + 1,
       },
     });

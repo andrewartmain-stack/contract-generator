@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Calibri', 'Arial', sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .document {
+            background-color: white;
+        }
+
+        p {
+            margin: 10px 0;
+        }
+
+        strong,
+        b {
+            font-weight: bold;
+        }
+
+        em,
+        i {
+            font-style: italic;
+        }
+
+        u {
+            text-decoration: underline;
+        }
+
+        ul,
+        ol {
+            margin: 10px 0;
+            padding-left: 30px;
+        }
+
+        li {
+            margin: 5px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            vertical-align: top;
+        }
+
+        td:first-child {
+            width: 45%;
+        }
+
+        .placeholder {
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        .signature-line {
+            display: inline-block;
+            border-bottom: 1px solid #000;
+            min-width: 200px;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="document">
+        <p style="text-align: center"><strong><span class="placeholder">{{company_name_company_field}}</span></strong>
+        </p>
+        <p style="text-align: center">cu sediul in <span class="placeholder">{{company_address_company_field}}</span>,
+            inregistrata la Registrul Comertului sub nr.<strong> <span
+                    class="placeholder">{{company_registrul_comertului_company_field}}</span>,</strong> CUI<strong>
+                <span class="placeholder">{{company_fiscal_code_company_field}}</span></strong></p>
+        <br>
+        <p>Inregistrat cu nr .<span class="placeholder">{{contract_number_worker_field}}</span>/<span
+                class="placeholder">{{contract_creation_date_worker_field}}</span> </p>
+        <br>
+        <p style="text-align: center"><strong>SCRISOARE</strong><strong> </strong><strong>DE</strong><strong>
+                GARAN</strong><strong>ȚIE,</strong></p>
+        <p style="text-align: center"><strong>Catre</strong><strong>:</strong><strong>
+            </strong><strong>AMBASADA</strong><strong> ROMÂNIEI</strong></p>
+        <p>Subscrisa<strong>,</strong><strong> </strong><strong><span
+                    class="placeholder">{{company_name_company_field}}</span> </strong>cu sediul in <span
+                class="placeholder">{{company_address_company_field}}</span>, inregistrata la Registrul Comertului sub
+            nr. <strong><span class="placeholder">{{company_registrul_comertului_company_field}}</span></strong><strong>
+            </strong>, CUI <strong><span class="placeholder">{{company_fiscal_code_company_field}}</span></strong>,
+            reprezentata legal de <span class="placeholder">{{company_owner_company_field}}</span>, în calitate de
+            <strong>Administrator</strong>, solicita sprijin pentru obtinerea vizei romane de lunga sedere in scop de
+            munca ( D/AM) pentru domnul/doamna <span class="placeholder">{{employee_name_worker_field}}</span> cetatean
+            al statului <span class="placeholder">{{country_worker_field}}</span>, nascut la data de <span
+                class="placeholder">{{employee_dob_worker_field}}</span>, CNP: <span
+                class="placeholder">{{document_cnp_worker_field}}</span>, identificat(a) cu pasaport seria <span
+                class="placeholder">{{document_seria_number_worker_field}}</span>, eliberat de <span
+                class="placeholder">{{issued_by_worker_field}}</span>.
+        </p>
+        <br>
+        <p>Domnul/doamna <span class="placeholder">{{employee_name_worker_field}}</span> va fi angajat(a) in cadrul
+            companiei noastre cu contract individual de munca, pe o perioada nedeterminata, pe functia <strong><span
+                    class="placeholder">{{cor_worker_field}}</span> <span
+                    class="placeholder">{{worker_position_worker_field}}</span></strong><strong> </strong>, conform
+            avizului de munca nr.<span class="placeholder">{{work_permit_worker_field}}</span> din <span
+                class="placeholder">{{permit_issued_worker_field}}</span>.</p>
+        <br>
+        <p>Menționăm ca salariul de bază al numitului/numitei <span
+                class="placeholder">{{employee_name_worker_field}}</span> va fi de <span
+                class="placeholder">{{salary_worker_field}}</span>/lună, avand incluse bonuri de masa.</p>
+        <br>
+        <p>Reprezentant legal</p>
+        <p><span class="placeholder">{{company_owner_company_field}}</span></p>
+        <p>Ștampila firmei</p>
+    </div>
+</body>
+
+</html>

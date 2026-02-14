@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Calibri', 'Arial', sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .document {
+            background-color: white;
+        }
+
+        p {
+            margin: 10px 0;
+        }
+
+        strong,
+        b {
+            font-weight: bold;
+        }
+
+        em,
+        i {
+            font-style: italic;
+        }
+
+        u {
+            text-decoration: underline;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            vertical-align: top;
+        }
+
+        td:first-child {
+            width: 50%;
+        }
+
+        .placeholder {
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        .signature-line {
+            display: inline-block;
+            border-bottom: 1px solid #000;
+            min-width: 100px;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="document">
+        <br>
+        <p style="text-align: center"><strong>CONTRACT INDIVIDUAL DE MUNC</strong><strong>Ă</strong></p>
+        <p style="text-align: center"><strong>încheiat </strong><strong>și </strong><strong>înregistrat sub nr. <span
+                    class="placeholder">{{contract_number_worker_field}}</span> din <span
+                    class="placeholder">{{starting_date_worker_field}}</span> în registrul general de
+                eviden</strong><strong>ță a salariaților</strong></p>
+        <br>
+        <p><strong>A. P</strong><strong>ărțile contractului</strong></p>
+        <br>
+        <p>Angajator: <strong>Persoana juridica</strong>, <strong><span
+                    class="placeholder">{{company_name_company_field}}</span> </strong>cu sediul în <strong><span
+                    class="placeholder">{{company_address_company_field}}</span>, </strong>cod fiscal <strong><span
+                    class="placeholder">{{company_fiscal_code_company_field}}</span>, </strong>reprezentat legal prin
+            <strong><span class="placeholder">{{company_owner_company_field}}</span></strong> în calitate de
+            <strong>administrator</strong>
+        </p>
+        <p>Și</p>
+        <p>Salariatul: <strong><span class="placeholder">{{employee_name_worker_field}}</span>,</strong> domiciliat în
+            <strong><span class="placeholder">{{employee_address_worker_field}}</span></strong>, posesor al <span
+                class="placeholder">{{type_of_document_worker_field}}</span>,<strong> </strong>nr. <strong><span
+                    class="placeholder">{{document_seria_number_worker_field}}</span>, </strong> eliberată de
+            <strong><span class="placeholder">{{document_given_by_worker_field}}</span>, </strong>la data <strong><span
+                    class="placeholder">{{document_creation_date_worker_field}}</span>,</strong> cu CNP <strong><span
+                    class="placeholder">{{document_cnp_worker_field}}</span> .</strong>
+        </p>
+        <p>am încheiat prezentul contract individual de muncă în următoarele condiții asupra cărora am convenit:</p>
+        <br>
+        <p><strong>B. Obiectul contractului: ANGAJARE</strong></p>
+        <br>
+        <p><strong>C. Durata contractului:</strong></p>
+        <p><strong>Nedeterminata, salariatul <span class="placeholder">{{employee_name_worker_field}}</span> urmand sa
+                inceapa activitatea la data de <span class="placeholder">{{starting_date_worker_field}}</span>.</strong>
+        </p>
+        <br>
+        <p><strong>D. Perioada de prob</strong><strong>ă:</strong></p>
+        <p>a) durata<strong> </strong>de<strong> 90</strong> zile calendaristice;</p>
+        <p>b) condițiile perioadei de probă (dacă există) <strong>_______</strong>.</p>
+        <br>
+        <p><strong>E. Locul de munc</strong><strong>ă</strong></p>
+        <p>1. Activitatea se desfășoară la punctul de lucru <strong>_______ sau </strong><strong>în orice punct de
+                lucru, la sediul clientului sau alt loc de munc</strong><strong>ă organizat al angajatorului</strong>.
+        </p>
+        <p>2. În lipsa unui loc de muncă fix salariatul va desfășura activitatea astfel: <strong>_______ </strong>(pe
+            teren/la sediul clienților/arie geografică <strong>_______, </strong>grup de unități etc.). În acest caz
+            salariatul va beneficia de<strong>: </strong><strong>_______</strong></p>
+        <p>a) prestații suplimentare <strong>_______ </strong>(în bani sau în natură);</p>
+        <p>b) asigurarea/decontarea transportului de către angajator <strong>_______ </strong>(după caz).</p>
+        <br>
+        <p><strong>F. Felul muncii</strong></p>
+        <p>Funcția/ocupația <strong><span class="placeholder">{{worker_position_worker_field}}</span>,</strong> conform
+            cod <span class="placeholder">{{cor_worker_field}}</span>.</p>
+        <br>
+        <p><strong>G. Durata timpului de munc</strong><strong>ă și repartizarea acestuia:</strong></p>
+        <p>1.<strong> O norma intreaga, durata timpului de lucru fiind de 8 ore pe zi</strong></p>
+        <p>a) Repartizarea programului de muncă se face după cum urmează <strong>Inegal</strong>. (ore zi/ore
+            noapte/inegal);</p>
+        <p>b) Programul de muncă se poate modifica în condițiile regulamentului intern/contractului colectiv de muncă
+            aplicabil.</p>
+        <br>
+        <p>2. Modalitatea de organizare a muncii în schimburi, după cum urmează: <strong>_______.</strong></p>
+        <br>
+        <p><strong>H. Concediul</strong></p>
+        <p>Durata concediului anual de odihnă este de <strong>21</strong> zile lucrătoare, în raport cu perioada
+            lucrată.</p>
+        <p>De asemenea, beneficiază de un concediu suplimentar de <strong>_______ </strong>zile lucrătoare.<strong>
+            </strong></p>
+        <br>
+        <p><strong>I. Sal</strong><strong>ariul</strong></p>
+        <p>1. Salariul de baza lunar brut: <strong><span class="placeholder">{{salary_worker_field}}</span>
+            </strong>lei.</p>
+        <p>2. Alte elemente constitutive:</p>
+        <p>a) sporuri <strong>;</strong></p>
+        <p>b) indemnizații <strong>_______;</strong></p>
+        <p>c) prestații suplimentare în bani <strong>_______;</strong></p>
+        <p>d) modalitatea prestațiilor suplimentare în natură <strong>_______</strong><strong>;</strong></p>
+        <p>e) alte adaosuri <strong>_______.</strong></p>
+        <p>3. Orele suplimentare prestate de salariații cu normă întreagă în afara programului normal de lucru se
+            compensează cu ore libere plătite în următoarele 90 de zile calendaristice după efectuarea acesteia, conform
+            contractului colectiv de muncă aplicabil sau Legii nr.53/2003 - Codul muncii. În cazul în care compensarea
+            prin ore libere plătite nu este posibilă, orele suplimentare prestate în afara programului normal de lucru
+            vor fi plătite cu un spor la salariu în cuantum de <strong>_______.</strong></p>
+        <p>4. Munca prestată în zilele de sărbători legale, precum și în zilele libere plătite stabilite prin acte
+            normative/contracte colective de muncă aplicabile, se compensează cu timp liber plătit sau cu un spor la
+            salariu, conform contractului colectiv de muncă aplicabil sau Legii nr. 53/2003 Codul muncii<strong>.
+            </strong></p>
+        <p>5. Data/datele la care se plătește salariul este/sunt <strong>_______.</strong></p>
+        <p>6. Metoda de plată <strong>_______.</strong></p>
+        <br>
+        <p><strong>J. Alte clauze: </strong></p>
+        <p>a) perioada de preaviz în cazul concedierii este de <strong>_______ zile
+                lucr</strong><strong>ătoare</strong>, conform Legii nr. 53/2003 - Codul muncii sau contractului colectiv
+            de muncă aplicabil, după caz;</p>
+        <p>b) perioada de preaviz în cazul demisiei este de<strong> _______ zile lucr</strong><strong>ătoare</strong>,
+            conform Legii nr. 53/2003 - Codul muncii, cu modificările și completările ulterioare sau contractului
+            colectiv de muncă aplicabil;</p>
+        <p>c) în cazul în care salariatul urmează să-și desfășoare activitatea în străinătate, informațiile prevăzute la
+            art.18 alin. (1) din Legea nr. 53/2003 - Codul muncii se vor regăsi și în contractul individual de muncă;
+        </p>
+        <p>d) alte clauze <strong>_______.</strong></p>
+        <br>
+        <p><strong>K. Atribu</strong><strong>țiile postului</strong></p>
+        <p>Atribuțiile postului sunt prevăzute în fișa postului, anexă la contractul individual de muncă.</p>
+        <br>
+        <p><strong>L. Riscurile specifice postului</strong></p>
+        <p>Riscurile de accidentare și îmbolnăvire profesională specifice postului sunt prevăzute în evaluările de risc
+            ale locului de muncă/postului de lucru și în fișa de identificare a factorilor de risc profesional. </p>
+        <br>
+        <p><strong>M.</strong><strong> Criteriile de evaluare a activit</strong><strong>ății profesionale a
+                salariatului:</strong></p>
+        <p><strong>ÎNDEPLINIREA SARCINILOR</strong>: se ține seama de precizie, curățenie, îndemânare, organizarea
+            muncii, utilizarea riguroasă a materiilor prime și materialelor;</p>
+        <p><strong>RELA</strong><strong>ȚIONARE</strong>: se ține seama de folosirea integral a programului de lucru,
+            volumul de muncă realizat și capacitatea de a respecta planul lucrării în condiții normale de muncă;</p>
+        <p><strong>PERSONALE</strong>: se ia în considerație capacitatea de a face față schimbărilor condițiilor de
+            muncă, de a se acomoda cu noi situații, ușurința de a învăța noile îndatoriri;</p>
+        <p><strong>SITUA</strong><strong>ȚIONALE</strong>: se ia în considerație capacitatea de a evalua o idee sau o
+            situație nou apăruta, de a trage concluzia corectă, capacitatea de a lua o decizie corectă;</p>
+        <p><strong>MANAGERIALE</strong>- se ia în considerație abilitatea de folosire eficientă a resurselor puse la
+            dispoziție de unitate, de corelare a inițiativei cu capacitatea de previziune și control:</p>
+        <br>
+        <p><strong>N. Semn</strong><strong>ătura electronica </strong></p>
+        <p>Utilizarea semnăturii electronice, semnăturii electronice avansate și semnăturii electronice calificate se
+            realizează după cum urmează<strong>: </strong><strong>_______, </strong>în conformitate cu prevederile
+            actelor normative/Regulamentul intern/contract colectiv de muncă aplicabil. </p>
+        <br>
+        <p><strong>O. Formare profesional</strong><strong>ă</strong></p>
+        <p>Formarea profesională se realizează în următoarele condiții: <strong>_______ </strong>în conformitate cu
+            prevederile actelor normative/Regulamentul intern/contract colectiv de muncă aplicabil. </p>
+        <br>
+        <p><strong>P. Condi</strong><strong>ții de muncă:</strong></p>
+        <p>Activitatea se desfășoară în condiții normale/vătămătoare/deosebite/speciale de muncă/deosebit de
+            periculoase, în conformitate cu prevederile legale.</p>
+        <br>
+        <p><strong>Q.</strong> <strong>Drepturi </strong><strong>și obligații ale părților privind sănătatea și
+                securitatea </strong><strong>în munc</strong><strong>ă:</strong></p>
+        <p>a) echipament individual de protecție <strong>_______;</strong></p>
+        <p>b) echipament individual de lucru <strong>_______;</strong></p>
+        <p>c) materiale igienico-sanitare <strong>_______;</strong></p>
+        <p>d) alimentație de protecție <strong>_______;</strong></p>
+        <p>e) alte drepturi și obligații privind sănătatea și securitatea în muncă <strong>_______.</strong></p>
+        <br>
+        <p><strong>R. Drepturi </strong><strong>și obligații generale ale părților:</strong></p>
+        <p><strong>1. Salariatul are, în principal, urm</strong><strong>ătoarele drepturi:</strong></p>
+        <p>a) dreptul la salarizare pentru munca depusă;</p>
+        <p>b) dreptul la repaus zilnic și săptămânal;</p>
+        <p>c) dreptul la concediu de odihnă anual;</p>
+        <p>d) dreptul la egalitate de șanse și de tratament;</p>
+        <p>e) dreptul la securitate și sănătate în muncă;</p>
+        <p>f) dreptul la acces la formare profesională;</p>
+        <p>g) ale drepturi și obligații prevăzute de lege sau de contractele colective de muncă aplicabile, după caz.
+        </p>
+        <br>
+        <p><strong>2. Salariatului îi revin, în principal, urm</strong><strong>ătoarele obligații:</strong></p>
+        <p>a) obligația de a realiza norma de muncă sau, după caz, de a îndeplini atribuțiile ce îi revin conform fișei
+            postului;</p>
+        <p>b) obligația de a respecta disciplina muncii;</p>
+        <p>c) obligația de fidelitate față de angajator în executarea atribuțiilor de serviciu;</p>
+        <p>d) obligația de a respecta măsurile de securitate și sănătate a muncii în unitate;</p>
+        <p>e) obligația de a respecta confidențialitatea informațiilor și documentelor utilizate în îndeplinirea
+            atribuțiilor de serviciu;</p>
+        <p>f) obligația de a adera la un fond de pensii administrat privat, în conformitate cu prevederile art.30 din
+            Legea nr.411/2004, privind fondurile de pensii administrate privat, cu modificările și completările
+            ulterioare.</p>
+        <br>
+        <p><strong>3. Angajatorul are, în principal, urm</strong><strong>ătoarele drepturi:</strong></p>
+        <p>a) să stabilească atribuțiile de serviciu și norma de muncă pentru fiecare salariat;</p>
+        <p>b) să dea dispoziții cu caracter obligatoriu pentru salariat, sub rezerva legalității lor;</p>
+        <p>c) să exercite controlul asupra modului de îndeplinire a sarcinilor de serviciu;</p>
+        <p>d) să constate săvârșirea abaterilor disciplinare și să aplice sancțiunile corespunzătoare, potrivit legii,
+            contractului colectiv de muncă aplicabil și regulamentului intern;</p>
+        <p>e) să stabilească obiectivele de performanță individuală a salariatului, precum și criteriile de evaluare a
+            realizării acestora; </p>
+        <p>f) să suporte asigurarea medicală privată, contribuțiile suplimentare la pensia facultativă sau la pensia
+            ocupațională a salariatului, în condițiile legii, după caz;</p>
+        <p>g) să acorde, orice alte drepturi, stabilite ca urmare a activității profesionale a salariatului.</p>
+        <br>
+        <p><strong>4. Angajatorului îi revin, în principal, urm</strong><strong>ătoarele
+                obligații</strong><strong>:</strong></p>
+        <p>a) sa înmâneze salariatului un exemplar din contractul individual de muncă, anterior începerii activității;
+        </p>
+        <p>b) să înființeze registrul general de evidență a salariaților și să opereze înregistrările prevăzute de lege;
+        </p>
+        <p>c) să acorde salariatului toate drepturile ce decurg din contractele individuale de muncă, din contractul
+            colectiv de muncă aplicabil și din lege;</p>
+        <p>d) să asigure permanent condițiile tehnice si organizatorice avute în vedere la elaborarea normelor de muncă
+            si condițiile corespunzătoare de muncă;</p>
+        <p>e) să informeze salariatul asupra condițiilor de muncă și asupra elementelor care privesc desfășurarea
+            relațiilor de muncă; </p>
+        <p>f) să informeze angajatul cu privire la obligația de a adera la un fond de pensii administrat privat, în
+            condițiile legii;</p>
+        <p>g) să elibereze, un document care să ateste calitatea de salariat a solicitantului, respectiv activitatea
+            desfășurată de acesta, durata activității, salariul, vechimea în muncă, în meserie și specialitate sau un
+            extras din registrul general de evidență a salariaților, datat și certificat pentru conformitate;</p>
+        <p>h) să asigure confidențialitatea datelor cu caracter personal ale salariatului.</p>
+        <br>
+        <p><strong>S. Dispozi</strong><strong>ții finale</strong> </p>
+        <p>1. Nivelul la care contractul colectiv de muncă aplicabil a fost încheiat (ex: unități/grup de unități/sector
+            de unitate) <strong>_______ _______ _______.</strong></p>
+        <p>2. Prevederile prezentului contract individual de muncă se completează cu dispozițiile Legii nr. 53/2003 -
+            Codul muncii și ale contractului colectiv de muncă aplicabil prevăzut la litera S pct.1.</p>
+        <br>
+        <p>Orice modificare privind clauzele contractuale în timpul executării contractului individual de muncă impune
+            încheierea unui act adițional la contract, conform dispozițiilor legale, anterior producerii modificării, cu
+            excepția situațiilor în care o asemenea modificare este prevăzută în mod expres de lege sau în contractul
+            colectiv de muncă aplicabil. </p>
+        <br>
+        <p><strong>T. Conflictele în leg</strong><strong>ătură cu </strong><strong>încheierea, executarea, modificarea,
+                suspendarea sau încetarea prezentului contract individual de munc</strong><strong>ă </strong><strong>pot
+                fi soluționate at</strong><strong>ât pe cale amiabil</strong><strong>ă prin procedura concilierii,
+                c</strong><strong>ât </strong><strong>și de instanța judecătorească competentă material și teritorial,
+                potrivit legii.</strong></p>
+        <br>
+        <p>Prezentul contract individual de muncă s-a încheiat în două exemplare, câte unul pentru fiecare parte.</p>
+        <br>
+        <table>
+            <tr>
+                <td>Angajator,</td>
+                <td>Salariat,</td>
+            </tr>
+            <tr>
+                <td><span class="placeholder">{{company_owner_company_field}}</span></td>
+                <td><span class="placeholder">{{employee_name_worker_field}}</span></td>
+            </tr>
+            <tr>
+                <td>
+                    <br>
+                    Semnătura <span class="signature-line"></span>
+                </td>
+                <td>
+                    <br>
+                    Semnătura <span class="signature-line"></span>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Sunt de acord cu prelucrarea datelor personale (G.D.P.R.) potrivit REGULAMENTULUI (UE) 2016/679 în
+                    scopul încheierii unui contract individual de muncă și derulării raporturilor de muncă,<br>Am primit
+                    un exemplar în original<br><br>Semnătura <span class="signature-line"></span></td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>

@@ -38,9 +38,78 @@ interface CompanyInfo {
     company_owner_company_field: string;
 }
 
+interface CompanyCard {
+    id: number;
+    name: string;
+    address: string;
+    fiscalCode: string;
+    registrulComertului: string;
+    owner: string
+}
+
 const GenerateEmployeeEmbessyDocuments = () => {
     const fileInputRefs = useRef<{ [key: number]: HTMLInputElement | null }>({});
     const importFileInputRef = useRef<HTMLInputElement>(null);
+
+    // Данные компаний с Registrul Comertului
+    const companiesData: CompanyCard[] = [
+        {
+            id: 1,
+            name: "STEF FLYCAR DRIVE S.R.L.",
+            address: "Jud. Iaşi, Municipiul Iaşi, Şoseaua ARCU, Nr. 18, cam.1, Bl. Z16, Scara A, Ap. 1",
+            fiscalCode: "52720420",
+            registrulComertului: "J2025079704000",
+            owner: "ȘTEFĂNESCU DĂNUȚ-FLORIN"
+        },
+        {
+            id: 2,
+            name: "STEF ENGO DRIVE S.R.L",
+            address: "Jud. Cluj, Municipiul Cluj-Napoca, Aleea RETEZAT, Nr. 5, CAMERA NR.1, Scara 1, Etaj 2, Ap. 6",
+            fiscalCode: "52719379",
+            registrulComertului: "J2025079655005",
+            owner: "ȘTEFĂNESCU DĂNUȚ-FLORIN"
+        },
+        {
+            id: 3,
+            name: "STEF LIFE DRIVE S.R.L",
+            address: "Jud. Timiş, Municipiul Timişoara, Strada LABIRINT, Nr. 18, CAMERA NR. 1, Bl. B12, Scara A, Etaj 3, Ap. 14",
+            fiscalCode: "52737316",
+            registrulComertului: "J2025080478000",
+            owner: "ȘTEFĂNESCU DĂNUȚ-FLORIN"
+        },
+        {
+            id: 4,
+            name: "STEF EDEN ENGO DRIVE S.R.L.",
+            address: "Jud. Argeş, Municipiul Piteşti, Aleea VOINICILOR, Nr. 5, camera nr.1, Bl. P14, Scara A, Etaj 3, Ap. 12",
+            fiscalCode: "52720098",
+            registrulComertului: "J2025079683006",
+            owner: "ȘTEFĂNESCU DĂNUȚ-FLORIN"
+        },
+        {
+            id: 5,
+            name: "STEF EDEN DRIVE S.R.L",
+            address: "Bucureşti Sectorul 2, Strada POIANA CU ALUNI, Nr. 6, CAMERA NR. 2, Bl. 17, Scara 3, Etaj 4, Ap. 89",
+            fiscalCode: "52725907",
+            registrulComertului: "J2025079871005",
+            owner: "ȘTEFĂNESCU DĂNUȚ-FLORIN"
+        },
+        {
+            id: 6,
+            name: "SF CONSTRUCT MOBILITY S.R.L.",
+            address: "Oraş Pantelimon, Strada MAGHERANULUI, Nr. 16, Camera 1, Județ Ilfov",
+            fiscalCode: "47239471",
+            registrulComertului: "J23/8144/24.11.2022",
+            owner: "FRINCU DANIEL-FLORIN"
+        },
+        {
+            id: 7,
+            name: "PLUMA & PURGATO S.R.L.",
+            address: "BUCUREȘTI, sector 2, Str. DÂMBOVICIOARA, Nr. 17, Et. 1, Ap. 3, județ BUCUREȘTI",
+            fiscalCode: "47953100",
+            registrulComertului: "J40/6686/2023",
+            owner: "IUGA IRINA ANDREEA"
+        }
+    ];
 
     const [company, setCompany] = useState<CompanyInfo>({
         company_name_company_field: '',
@@ -49,6 +118,8 @@ const GenerateEmployeeEmbessyDocuments = () => {
         company_fiscal_code_company_field: '',
         company_owner_company_field: '',
     });
+
+    const [selectedCompanyId, setSelectedCompanyId] = useState<number | null>(null);
 
     const [employees, setEmployees] = useState<Employee[]>([
         {
@@ -121,6 +192,18 @@ const GenerateEmployeeEmbessyDocuments = () => {
         };
     }, [employees]);
 
+    // Функция для выбора компании
+    const handleCompanySelect = (companyCard: CompanyCard) => {
+        setSelectedCompanyId(companyCard.id);
+        setCompany({
+            company_name_company_field: companyCard.name,
+            company_address_company_field: companyCard.address,
+            company_registrul_comertului_company_field: companyCard.registrulComertului,
+            company_fiscal_code_company_field: companyCard.fiscalCode,
+            company_owner_company_field: companyCard.owner
+        });
+    };
+
     const addEmployee = () => {
         const newId = employees.length > 0 ? Math.max(...employees.map(e => e.id)) + 1 : 1;
         setEmployees([...employees, {
@@ -191,10 +274,6 @@ const GenerateEmployeeEmbessyDocuments = () => {
         );
     };
 
-    const updateCompany = (field: keyof CompanyInfo, value: string) => {
-        setCompany(prev => ({ ...prev, [field]: value }));
-    };
-
     const formatDate = (dateStr: string): string => {
         if (!dateStr) return '';
         try {
@@ -213,41 +292,48 @@ const GenerateEmployeeEmbessyDocuments = () => {
         if (!dateStr) return '';
 
         try {
-            // If it's already a Date object
-            if (dateStr instanceof Date) {
-                const year = dateStr.getFullYear();
-                const month = String(dateStr.getMonth() + 1).padStart(2, '0');
-                const day = String(dateStr.getDate()).padStart(2, '0');
+            // Если это число (Excel дата), то преобразуем
+            if (typeof dateStr === 'number') {
+                // Excel даты считаются с 01.01.1900
+                const excelEpoch = new Date(1899, 11, 30);
+                const date = new Date(excelEpoch.getTime() + dateStr * 86400000);
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
                 return `${year}-${month}-${day}`;
             }
 
-            // Convert to string
-            const str = String(dateStr);
+            // Преобразуем в строку
+            const str = String(dateStr).trim();
 
-            // Try different date formats
-            let date: Date | null = null;
+            // Формат: DD-MM-YYYY (из вашего файла)
+            if (str.match(/^\d{1,2}-\d{1,2}-\d{4}$/)) {
+                const [day, month, year] = str.split('-').map(Number);
+                const date = new Date(year, month - 1, day);
+                const formattedYear = date.getFullYear();
+                const formattedMonth = String(date.getMonth() + 1).padStart(2, '0');
+                const formattedDay = String(date.getDate()).padStart(2, '0');
+                return `${formattedYear}-${formattedMonth}-${formattedDay}`;
+            }
 
-            // Format: DD.MM.YYYY
+            // Формат: DD.MM.YYYY
             if (str.match(/^\d{1,2}\.\d{1,2}\.\d{4}$/)) {
                 const [day, month, year] = str.split('.').map(Number);
-                date = new Date(year, month - 1, day);
-            }
-            // Format: DD/MM/YYYY
-            else if (str.match(/^\d{1,2}\/\d{1,2}\/\d{4}$/)) {
-                const [day, month, year] = str.split('/').map(Number);
-                date = new Date(year, month - 1, day);
-            }
-            // Format: YYYY-MM-DD (ISO)
-            else if (str.match(/^\d{4}-\d{1,2}-\d{1,2}$/)) {
-                date = new Date(str);
-            }
-            // Try parsing as is
-            else {
-                date = new Date(str);
+                const date = new Date(year, month - 1, day);
+                const formattedYear = date.getFullYear();
+                const formattedMonth = String(date.getMonth() + 1).padStart(2, '0');
+                const formattedDay = String(date.getDate()).padStart(2, '0');
+                return `${formattedYear}-${formattedMonth}-${formattedDay}`;
             }
 
-            // Check if date is valid
-            if (date && !isNaN(date.getTime())) {
+            // Формат: YYYY-MM-DD (ISO)
+            if (str.match(/^\d{4}-\d{1,2}-\d{1,2}$/)) {
+                return str;
+            }
+
+            // Пробуем стандартный парсинг
+            const date = new Date(str);
+            if (!isNaN(date.getTime())) {
                 const year = date.getFullYear();
                 const month = String(date.getMonth() + 1).padStart(2, '0');
                 const day = String(date.getDate()).padStart(2, '0');
@@ -558,43 +644,32 @@ const GenerateEmployeeEmbessyDocuments = () => {
             // Получаем заголовки (первая строка)
             const headers = jsonData[0] as string[];
 
-            // Маппинг заголовков на поля
+            // В функции handleImportFile обновите fieldMapping:
             const fieldMapping: Record<string, keyof Employee> = {
-                // Румынские заголовки
+                // Соответствие колонкам из вашего Excel файла
                 'Nume complet': 'employee_name_worker_field',
-                'Nume': 'employee_name_worker_field',
-                'Nume si Prenume': 'employee_name_worker_field',
                 'CNP': 'document_cnp_worker_field',
                 'Țara': 'country_worker_field',
                 'Tara': 'country_worker_field',
                 'Data nașterii': 'employee_dob_worker_field',
                 'Data nasterii': 'employee_dob_worker_field',
-                'Numar document': 'document_seria_number_worker_field',
                 'Număr document': 'document_seria_number_worker_field',
-                'Serie si numar': 'document_seria_number_worker_field',
+                'Numar document': 'document_seria_number_worker_field',
                 'Emis de': 'issued_by_worker_field',
-                'Emitent': 'issued_by_worker_field',
                 'Aviz de muncă': 'work_permit_worker_field',
                 'Aviz de munca': 'work_permit_worker_field',
                 'Data aviz muncă': 'permit_issued_worker_field',
                 'Data aviz munca': 'permit_issued_worker_field',
-                'Numar contract': 'contract_number_worker_field',
                 'Număr contract': 'contract_number_worker_field',
-                'Contract nr': 'contract_number_worker_field',
+                'Numar contract': 'contract_number_worker_field',
                 'Data contract': 'contract_creation_date_worker_field',
-                'Data contractului': 'contract_creation_date_worker_field',
                 'Salariu': 'salary_worker_field',
-                'Salariu (lei)': 'salary_worker_field',
-                'Salariu brut': 'salary_worker_field',
-                'COD COR': 'cor_worker_field',
                 'Cod COR': 'cor_worker_field',
-                'COR': 'cor_worker_field',
+                'COD COR': 'cor_worker_field',
+                'Funcția': 'worker_position_worker_field',  // Это критически важно!
                 'Functie': 'worker_position_worker_field',
                 'Funcție': 'worker_position_worker_field',
-                'Post': 'worker_position_worker_field',
-                'Adresa': 'employee_address_worker_field',
                 'Adresa angajat': 'employee_address_worker_field',
-                'Domiciliu': 'employee_address_worker_field',
                 'Adresa comodant': 'comodant_address_worker_field',
                 'Nume comodant': 'comodant_worker_field',
                 'CNP comodant': 'comodant_cnp_worker_field'
@@ -728,7 +803,7 @@ const GenerateEmployeeEmbessyDocuments = () => {
 
     const handleGenerate = async () => {
         if (!company.company_name_company_field || !company.company_fiscal_code_company_field) {
-            alert('Vă rugăm să completați informațiile companiei');
+            alert('Vă rugăm să selectați o companie');
             return;
         }
 
@@ -906,85 +981,143 @@ const GenerateEmployeeEmbessyDocuments = () => {
                     {activeTab === 'company' && (
                         <div className="bg-white rounded border border-gray-300 p-4">
                             <div className="flex items-center mb-4">
-                                <h2 className="text-lg font-semibold text-gray-800">Informații Companie</h2>
+                                <h2 className="text-lg font-semibold text-gray-800">Selectare Companie</h2>
                             </div>
 
-                            <div className="space-y-4">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div className="space-y-3">
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                                Nume Companie *
-                                            </label>
-                                            <input
-                                                type="text"
-                                                value={company.company_name_company_field}
-                                                onChange={(e) => updateCompany('company_name_company_field', e.target.value)}
-                                                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-transparent text-sm"
-                                                placeholder="Numele companiei"
-                                            />
-                                        </div>
-
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                                Cod Fiscal (CUI) *
-                                            </label>
-                                            <input
-                                                type="text"
-                                                value={company.company_fiscal_code_company_field}
-                                                onChange={(e) => updateCompany('company_fiscal_code_company_field', e.target.value)}
-                                                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-transparent text-sm"
-                                                placeholder="RO12345678"
-                                            />
-                                        </div>
-
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                                Nr. Registrul Comerțului
-                                            </label>
-                                            <input
-                                                type="text"
-                                                value={company.company_registrul_comertului_company_field}
-                                                onChange={(e) => updateCompany('company_registrul_comertului_company_field', e.target.value)}
-                                                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-transparent text-sm"
-                                                placeholder="J40/1234/2023"
-                                            />
-                                        </div>
+                            <div className="space-y-6">
+                                {/* Company Cards */}
+                                <div>
+                                    <h3 className="text-md font-medium text-gray-700 mb-3">Selectează Compania</h3>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        {companiesData.map((companyCard) => (
+                                            <div
+                                                key={companyCard.id}
+                                                className={`border rounded-lg p-4 cursor-pointer transition-all hover:shadow-md ${selectedCompanyId === companyCard.id
+                                                    ? 'border-gray-800 bg-gray-50 ring-1 ring-gray-800'
+                                                    : 'border-gray-300 hover:border-gray-400'
+                                                    }`}
+                                                onClick={() => handleCompanySelect(companyCard)}
+                                            >
+                                                <div className="flex items-start justify-between">
+                                                    <div>
+                                                        <h4 className="font-medium text-gray-800 mb-1">{companyCard.name}</h4>
+                                                        <div className="text-sm text-gray-600 space-y-1">
+                                                            <div className="flex items-center">
+                                                                <svg className="w-4 h-4 mr-1 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                                </svg>
+                                                                <span>CUI: {companyCard.fiscalCode}</span>
+                                                            </div>
+                                                            <div className="flex items-center">
+                                                                <svg className="w-4 h-4 mr-1 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                                </svg>
+                                                                <span>Reg. Comerț: {companyCard.registrulComertului}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    {selectedCompanyId === companyCard.id && (
+                                                        <div className="text-green-600">
+                                                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                                            </svg>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                <p className="text-xs text-gray-500 mt-2 line-clamp-2">{companyCard.address}</p>
+                                            </div>
+                                        ))}
                                     </div>
+                                </div>
 
-                                    <div className="space-y-3">
+                                {/* Company Info Display */}
+                                <div className="border-t pt-6">
+                                    <h3 className="text-md font-medium text-gray-700 mb-3">Informații Companie Selectate</h3>
+
+                                    <div className="space-y-4">
+                                        {/* Legal Representative - Статичное поле */}
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-1">
                                                 Reprezentant Legal
                                             </label>
-                                            <input
-                                                type="text"
-                                                value={company.company_owner_company_field}
-                                                onChange={(e) => updateCompany('company_owner_company_field', e.target.value)}
-                                                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-transparent text-sm"
-                                                placeholder="Nume reprezentant"
-                                            />
+                                            <div className="p-3 bg-gray-50 border border-gray-300 rounded text-gray-800">
+                                                {company.company_owner_company_field}
+                                            </div>
                                         </div>
 
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                                Adresa Companie
-                                            </label>
-                                            <textarea
-                                                value={company.company_address_company_field}
-                                                onChange={(e) => updateCompany('company_address_company_field', e.target.value)}
-                                                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-transparent text-sm"
-                                                placeholder="Adresa completa a companiei"
-                                                rows={4}
-                                            />
+                                        {/* Company Details Display */}
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                                    Nume Companie *
+                                                </label>
+                                                <div className={`p-3 border rounded ${company.company_name_company_field ? 'border-gray-300 bg-white' : 'border-gray-200 bg-gray-50'}`}>
+                                                    {company.company_name_company_field ? (
+                                                        <span className="text-gray-800">{company.company_name_company_field}</span>
+                                                    ) : (
+                                                        <span className="text-gray-500 italic">Selectați o companie</span>
+                                                    )}
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                                    Cod Fiscal (CUI) *
+                                                </label>
+                                                <div className={`p-3 border rounded ${company.company_fiscal_code_company_field ? 'border-gray-300 bg-white' : 'border-gray-200 bg-gray-50'}`}>
+                                                    {company.company_fiscal_code_company_field ? (
+                                                        <span className="text-gray-800">{company.company_fiscal_code_company_field}</span>
+                                                    ) : (
+                                                        <span className="text-gray-500 italic">Selectați o companie</span>
+                                                    )}
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                                    Nr. Registrul Comerțului
+                                                </label>
+                                                <div className={`p-3 border rounded ${company.company_registrul_comertului_company_field ? 'border-gray-300 bg-white' : 'border-gray-200 bg-gray-50'}`}>
+                                                    {company.company_registrul_comertului_company_field ? (
+                                                        <span className="text-gray-800">{company.company_registrul_comertului_company_field}</span>
+                                                    ) : (
+                                                        <span className="text-gray-500 italic">Selectați o companie</span>
+                                                    )}
+                                                </div>
+                                            </div>
+
+                                            <div className="md:col-span-2">
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                                    Adresa Companie
+                                                </label>
+                                                <div className={`p-3 border rounded ${company.company_address_company_field ? 'border-gray-300 bg-white' : 'border-gray-200 bg-gray-50'}`}>
+                                                    {company.company_address_company_field ? (
+                                                        <span className="text-gray-800">{company.company_address_company_field}</span>
+                                                    ) : (
+                                                        <span className="text-gray-500 italic">Selectați o companie</span>
+                                                    )}
+                                                </div>
+                                            </div>
                                         </div>
+
+                                        {/* Selected Company Indicator */}
+                                        {selectedCompanyId && (
+                                            <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded flex items-center">
+                                                <svg className="w-5 h-5 text-green-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                                </svg>
+                                                <span className="text-sm text-green-700">
+                                                    Compania selectată: {companiesData.find(c => c.id === selectedCompanyId)?.name}
+                                                </span>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     )}
 
-                    {/* Employees Tab */}
+                    {/* Employees Tab - остался без изменений */}
                     {activeTab === 'employees' && (
                         <div className="bg-white rounded border border-gray-300 p-4">
                             <div className="flex items-center justify-between mb-4">

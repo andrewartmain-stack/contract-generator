@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Calibri', 'Arial', sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .document {
+            background-color: white;
+        }
+
+        p {
+            margin: 10px 0;
+        }
+
+        strong,
+        b {
+            font-weight: bold;
+        }
+
+        em,
+        i {
+            font-style: italic;
+        }
+
+        u {
+            text-decoration: underline;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        td {
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .placeholder {
+            /* background-color: #ffffcc; */
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        .underline-blank {
+            border-bottom: 1px solid #000;
+            display: inline-block;
+            min-width: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="document">
+        <p><strong>SC: <span class="placeholder">{{company_name_company_field}}</span></strong></p>
+        <p><strong>CUI: <span class="placeholder">{{company_fiscal_code_company_field}}</span></strong></p>
+        <p><strong>Adresa: <span class="placeholder">{{company_address_company_field}}</span></strong></p>
+        <br>
+        <p style="text-align: center"><strong>FISA DE POST - <span
+                    class="placeholder">{{worker_position_worker_field}}</span> cod <span
+                    class="placeholder">{{cor_worker_field}}</span></strong></p>
+        <br>
+        <p><strong>1.</strong> Denumirea compartimentului:</p>
+        <p>Logistica / Administrativ</p>
+        <p><strong>2.</strong> Denumirea postului:</p>
+        <p><span class="placeholder">{{worker_position_worker_field}}</span></p>
+        <p><strong>3.</strong> Numele si prenumele salariatului:</p>
+        <p><strong><span class="placeholder">{{employee_name_worker_field}}</span></strong></p>
+        <p><strong>4.</strong> Se subordoneaza:</p>
+        <p>Administrator</p>
+        <p><strong>5.</strong> Subordoneaza:</p>
+        <p>Nu este cazul</p>
+        <p><strong>6.</strong> Drept de semnatura:</p>
+        <p>Intern:</p>
+        <p>Extern:</p>
+        <p><strong>7.</strong> Pregatirea si experienta:</p>
+        <p>Studii medii</p>
+        <p>Scoala de soferi categoria B –daca folosestre masina</p>
+        <p><strong>8.</strong> Responsabilitati:</p>
+        <p>- transport de documente si corespondenta;</p>
+        <p>- primirea, inregistrarea si repartizarea corespondentei primite;</p>
+        <p>- ridicarea si expedierea corespondentei la destinatari;</p>
+        <p>- ridicarea si transportarea documentelor la /si de la/ parteneri</p>
+        <p>- primirea si transmiterea coletelor</p>
+        <p>- raspunde administrativ, material si civil de echipamentele din dotarea locului de munca, a materialelor si
+            dispozitivelor care contribuie la implinirea obiectului de activitate al postului.</p>
+        <p>- raspunde administrativ, material si civil pentru siguranta trimiterilor.</p>
+        <p>- raspunde administrativ, material si civil asupra valorilor manipulate in timpul programului</p>
+        <p>- raspunde administrativ, material si penal pentru siguranta transportului idem pentru bunurile transportate
+        </p>
+        <p>- raspunde administrativ, material si penal pentru incidentele din timpul transportului care se incadreaza in
+            legea circulatiei rutiere</p>
+        <p>- raspunde administrativ, material si civil pentru daunele auto si terti</p>
+        <p>- raspunde administrativ, material si civil privind securitatea si sanatate a muncii, pentru respectarea
+            pastrarii in cadrul aplicarii prestatiilor solicitate de post, a unei conduite comportamentale absolute
+            normale ,domestice si fara nici o alta specificatie ,alta decit o activitate de lucru presupusa a fi ceruta
+            de munca de transportul de documente si pachete de mici dimensiuni.</p>
+        <p><strong>9.ATRIBUTIUNI PE LINIE DE SECURITATE SI SANATATE IN MUNCA SI SITUATII DE URGENTA : </strong></p>
+        <p>Sa isi insuseasca si sa respecte normele de securitate si sanatate in munca si masurile de aplicare a
+            acestora ; </p>
+        <p>Sa desfasoare activitatea in asa fel incat sa nu expuna la pericol de accidentare sau imbolnavire
+            profesionala atat propria persoana , cat si celelalte persoane participante la procesul de munca ; </p>
+        <p><strong>Sa coopereze, atit timp cit este necesar, cu angajatorul, pentru a permite acestuia sa se asigure ca
+                mediul de munca si conditiile de munca sunt sigure si fara riscuri pentru securitate si sanatate, in
+                domeniul sau de activitate; </strong></p>
+        <p><strong>Sa coopereze, atit timp cit este necesar, cu angajatorul, pentru realizarea oricaror masuri si
+                cerinte dispuse de catre inspectorii de munca si inspectorii sanitari, pentru protectia sanatatii si
+                securitatii lucratorilor; </strong></p>
+        <p><strong>Sa dea relatiile solicitate de organele de control si de cercetare in domeniul securitatii si
+                sanatatii in munca </strong></p>
+        <br>
+        <p><strong>10.</strong> Sanctiuni pentru nerespectarea fisei postului sau a anexelor acestora:</p>
+        <p>Daca este cazul</p>
+        <br>
+        <p><strong>11.</strong> Semnaturi:
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reprezentant
+            legal <span class="placeholder">{{company_owner_company_field}}</span></p>
+        <br>
+        <br>
+        <p><strong>12.</strong> Data semnarii: <span class="placeholder">{{starting_date_worker_field}}</span></p>
+        <br>
+    </div>
+</body>
+
+</html>
